@@ -15,7 +15,7 @@ const parse = async filename => {
 
   lines.forEach((line, id) => {
     const [orientation,, ...tags] = line.split(' ');
-    const vertical = orientation === 'vertical';
+    const vertical = orientation === 'V';
     dataset.set(id, { id, vertical, tags });
   });
 
