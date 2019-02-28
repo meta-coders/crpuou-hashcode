@@ -4,6 +4,7 @@ const fs = require('fs');
 const util = require('util');
 
 const read = util.promisify(fs.readFile);
+const write = util.promisify(fs.writeFile);
 
 const parse = async filename => {
   const data = await read(filename, 'utf8');
@@ -22,4 +23,11 @@ const parse = async filename => {
   return dataset;
 };
 
-module.exports = parse;
+const save = async (filename, transitions) => {
+  const count = transitions.length;
+  const text = transitions.map(({ ids }) => `${ids.join(' ')}`).join('\n');
+  const data = `${count}\n${text}`;
+  await write(filename, data, 'utf8');
+};
+
+module.exports = { parse, save };

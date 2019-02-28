@@ -1,6 +1,6 @@
 'use stirct';
 
-const parse = require('./parser');
+const { parse, save } = require('./parser');
 const compare = require('./compare');
 
 const union = (set1, set2) => set2.reduce(
@@ -76,11 +76,11 @@ const makeTransitions = slides => {
   return transitions;
 };
 
-const run = async () => {
-  const dataset = await parse('./input/a_example.txt');
+const run = async filename => {
+  const dataset = await parse('./input/' + filename + '.txt');
   const slides = composeSlides(dataset);
   const sorted = makeTransitions(slides);
-  console.log(sorted);
+  await save('./output/' + filename + '.out', sorted);
 };
 
-run().catch(console.error);
+run('a_example.txt').catch(console.error);
