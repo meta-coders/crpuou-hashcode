@@ -7,7 +7,7 @@ const union = (set1, set2) => set2.reduce(
   (acc, cur) => (acc.includes(cur) ? null : acc.push(cur), acc), set1
 );
 
-const findMaxInteresting = (dataset, key, tags) => {
+const findMaxInterestingImg = (dataset, key, tags) => {
   let max = -1;
   let maxVal = null;
 
@@ -24,28 +24,54 @@ const findMaxInteresting = (dataset, key, tags) => {
 };
 
 const composeSlides = dataset => {
-  const slides = [];
+  const slides = new Map();
+  let slideId = 0;
 
   dataset.forEach(img => {
     if (img.vertical) {
-      const img2 = findMaxInteresting(dataset, img.id, img.tags);
+      const img2 = findMaxInterestingImg(dataset, img.id, img.tags);
       dataset.delete(img.id);
-      slides.push({
+      slides.set(slideId++, {
         ids: [img.id, img2.id],
         tags: union(img.tags, img2.tags),
       });
     } else {
-      slides.push({ ids: [img.id], tags: img.tags });
+      slides.set(slideId++, { ids: [img.id], tags: img.tags });
     }
   });
 
   return slides;
 };
 
+const findMaxInterestingSlide = (slides, slideId) => {
+  let max = -1;
+  let maxVal = null;
+
+  for (const [, val] of slides) {
+    const comp = compare(tags, val.tags);
+    if (comp > max) {
+      max = comp;
+      maxVal = val;
+    }
+  }
+
+  slides.delete(maxVal.id);
+  return maxVal;
+};
+
+const makeTransitions = slides => {
+  const transitions = [];
+
+
+  for (const [slideId, slide] of slides) {
+
+  }
+};
+
 const run = async () => {
   const dataset = await parse('./input/a_example.txt');
   const slides = composeSlides(dataset);
-  console.log(slides);
+  const sorted = makeTransitions(slides);
 };
 
 run().catch(console.error);
