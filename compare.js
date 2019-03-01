@@ -1,23 +1,48 @@
 'use strict';
 
-const compareTags = (
-  firstSet,
-  secondSet
+const compare1 = (
+  pictureA,
+  pictureB
 ) => {
-  let union = 0;
-  let first = 0;
-  let second = 0;
+  const union = [];
+  let a = 0;
+  let b = 0;
 
-  for (const fTeg of firstSet) {
-    if (secondSet.includes(fTeg)) union++;
-    else first++;
+  let tag;
+  for (tag of pictureA) {
+    if (pictureB.includes(tag)) union.push(tag);
+    else a++;
   }
 
-  for (const sTeg of secondSet) {
-    if (!firstSet.includes(sTeg)) second++;
+  for (tag of pictureB) {
+    if (!union.includes(tag)) b++;
   }
 
-  return Math.min(first, second, union);
+  return Math.min(a, b, union.length);
 };
 
-module.exports = compareTags;
+const compare2 = (
+  pictureA,
+  pictureB
+) => {
+  let union = 0;
+  let a = 0;
+  let b = 0;
+
+  let tag;
+  for (tag of pictureA) {
+    if (pictureB.includes(tag)) union++;
+    else a++;
+  }
+
+  for (tag of pictureB) {
+    if (!pictureA.includes(tag)) b++;
+  }
+
+  return Math.min(a, b, union);
+};
+
+module.exports = {
+  compare1,
+  compare2
+};
